@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PNG to PDF Converter - Free Online Tool | No Signup</title>
+    <meta name="description" content="Convert PNG images to PDF files instantly. Free, no signup, secure. Merge multiple PNGs into one PDF. Over 50,000 conversions." />
+    <meta name="keywords" content="PNG to PDF, convert PNG to PDF, free PDF converter, image to PDF, online tool" />
+    <link rel="canonical" href="https://www.yourdomain.com/" />
+    <!-- Open Graph -->
+    <meta property="og:title" content="PNG to PDF Converter - Free, Fast, No Signup" />
+    <meta property="og:description" content="Convert PNG images to PDF files with quality options. 100% free, no registration." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.yourdomain.com/" />
+    <meta property="og:image" content="https://www.yourdomain.com/og-image.jpg" />
+    <!-- Schema WebApplication -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "PNG to PDF Converter",
+        "description": "Convert PNG images to PDF files online with adjustable quality.",
+        "applicationCategory": "Utility",
+        "operatingSystem": "All",
+        "browserRequirements": "Modern browser with JavaScript",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
+    <!-- Bootstrap 5 + Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <!-- jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+      :root {
+        --primary: #2563eb;
+        --secondary: #1e293b;
+        --accent: #3b82f6;
+        --bg: #f8fafc;
+      }
+      body {
+        background-color: var(--bg);
+        color: var(--secondary);
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+      }
+      .bg-primary-custom {
+        background-color: var(--primary);
+      }
+      .btn-primary-custom {
+        background-color: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+      }
+      .btn-primary-custom:hover {
+        background-color: #1d4ed8;
+        border-color: #1d4ed8;
+      }
+      .border-primary-custom {
+        border-color: var(--primary);
+      }
+      .text-primary-custom {
+        color: var(--primary);
+      }
+      .shadow-card {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0, 0, 0, 0.03);
+      }
+      .drop-zone {
+        border: 2px dashed #cbd5e1;
+        border-radius: 1rem;
+        padding: 2.5rem 1rem;
+        transition: 0.2s;
+        cursor: pointer;
+        background: #fff;
+      }
+      .drop-zone:hover,
+      .drop-zone.dragover {
+        border-color: var(--primary);
+        background: #eff6ff;
+      }
+      .preview-thumb {
+        max-width: 120px;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        transition: 0.2s;
+      }
+      .preview-thumb:hover {
+        transform: scale(1.02);
+      }
+      .quality-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 1.25rem;
+        border: 1px solid #e9edf2;
+        height: 100%;
+      }
+      .quality-card .btn {
+        min-width: 140px;
+      }
+      .dark-mode {
+        background: #0f172a;
+        color: #f1f5f9;
+      }
+      .dark-mode .drop-zone {
+        background: #1e293b;
+        border-color: #475569;
+      }
+      .dark-mode .quality-card {
+        background: #1e293b;
+        border-color: #334155;
+      }
+      .dark-mode .card,
+      .dark-mode .shadow-card {
+        background: #1e293b;
+        border-color: #334155;
+      }
+      .dark-mode .bg-white {
+        background: #1e293b !important;
+      }
+      .dark-mode .text-secondary {
+        color: #cbd5e1 !important;
+      }
+      .dark-mode .border-light {
+        border-color: #334155 !important;
+      }
+      .dark-mode .list-group-item {
+        background: #1e293b;
+        color: #f1f5f9;
+        border-color: #334155;
+      }
+      .transition-theme {
+        transition:
+          background 0.2s,
+          color 0.2s,
+          border-color 0.2s;
+      }
+      .faq-question {
+        cursor: pointer;
+      }
+      .faq-question:hover {
+        color: var(--primary);
+      }
+      .seo-content p {
+        line-height: 1.7;
+      }
+      .badge-counter {
+        font-size: 0.9rem;
+      }
+      #loadingProgress {
+        transition: width 0.3s;
+      }
+      .footer-links a {
+        text-decoration: none;
+        color: #94a3b8;
+      }
+      .footer-links a:hover {
+        color: var(--primary);
+      }
+      .layout-options .form-select,
+      .layout-options .form-control {
+        background-color: #fff;
+      }
+      .dark-mode .layout-options .form-select,
+      .dark-mode .layout-options .form-control {
+        background-color: #1e293b;
+        color: #f1f5f9;
+        border-color: #475569;
+      }
+      .drag-item {
+        cursor: grab;
+        transition: all 0.15s ease;
+      }
+      .drag-item:active {
+        cursor: grabbing;
+      }
+      .drag-item.dragging {
+        opacity: 0.4;
+        transform: scale(0.95);
+      }
+      .drag-item.drag-over {
+        border: 2px dashed var(--primary);
+        background: rgba(37, 99, 235, 0.08);
+        border-radius: 12px;
+        transform: scale(1.02);
+      }
+      .reorder-hint {
+        font-size: 0.9rem;
+        color: var(--secondary);
+      }
+      .dark-mode .reorder-hint {
+        color: #cbd5e1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Google Analytics & AdSense placeholders -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-XXXXXXXXXX");
+    </script>
+    <ins class="adsbygoogle" style="display: block" data-ad-client="ca-pub-xxxxxxxxxxxxxx" data-ad-slot="xxxxxxxxxx" data-ad-format="auto"></ins>
+
+    <!-- Main wrapper -->
+    <div class="container py-4 transition-theme" id="app">
+      <!-- Header -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 fw-bold text-primary-custom"><i class="bi bi-file-image"></i> PNG to PDF</h1>
+        <div class="d-flex align-items-center gap-3">
+          <span class="badge bg-primary-custom rounded-pill px-3 py-2 badge-counter"><i class="bi bi-check-circle"></i> Over 50,000 PNGs converted</span>
+          <button class="btn btn-outline-secondary btn-sm" id="darkModeToggle"><i class="bi bi-moon"></i> Dark</button>
+        </div>
+      </div>
+
+      <!-- Prominent banner -->
+      <div class="alert alert-primary d-flex align-items-center mb-4 shadow-sm" role="alert">
+        <i class="bi bi-rocket-takeoff fs-4 me-2"></i>
+        <span class="fw-semibold">🚀 No Signup Required - 100% Free Tool</span>
+      </div>
+
+      <!-- Upload Section -->
+      <div class="card shadow-card mb-4">
+        <div class="card-body">
+          <div class="drop-zone text-center" id="dropZone">
+            <i class="bi bi-cloud-upload fs-1 text-primary-custom"></i>
+            <p class="mt-2 mb-1 fw-semibold">Drag & drop your PNG images here, or click to browse</p>
+            <small class="text-secondary">Max size: 100MB per image, multiple images allowed</small>
+            <input type="file" id="fileInput" accept=".png,.jpg,.jpeg,.webp,.bmp" multiple class="d-none" />
+          </div>
+          <div id="fileInfo" class="mt-3 d-none">
+            <div class="d-flex justify-content-between align-items-center">
+              <span><i class="bi bi-file-earmark-image"></i> <span id="fileCount"></span> images uploaded</span>
+              <button class="btn btn-outline-danger btn-sm" id="clearBtn"><i class="bi bi-x-lg"></i> Clear</button>
+            </div>
+            <div class="progress mt-2" style="height: 8px">
+              <div id="loadingProgress" class="progress-bar bg-primary-custom" style="width: 0%"></div>
+            </div>
+          </div>
+          <div id="conversionTime" class="mt-2 text-secondary small"></div>
+        </div>
+      </div>
+
+      <!-- Conversion results -->
+      <div id="resultArea" class="d-none">
+        <!-- Selection controls -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="fw-bold">Select images to include in PDF:</span>
+          <div>
+            <button class="btn btn-outline-primary btn-sm me-2" id="selectAllPages">Select All</button>
+            <button class="btn btn-outline-secondary btn-sm" id="deselectAllPages">Deselect All</button>
+          </div>
+        </div>
+        <!-- Preview grid with drag and drop reorder -->
+        <div class="row g-3 mb-2" id="previewRow"></div>
+        <!-- Reorder instruction -->
+        <div class="text-muted small mb-3 reorder-hint"><i class="bi bi-arrows-move"></i> <strong>Drag and drop</strong> any image to reorder the list. The order determines the page sequence in the PDF.</div>
+
+        <!-- Layout Options -->
+        <div class="card shadow-card mb-4 layout-options">
+          <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-layout-three-columns"></i> PDF Layout Options</h5>
+            <div class="row g-3 align-items-end">
+              <div class="col-md-3">
+                <label class="form-label">Page Size</label>
+                <select class="form-select" id="pageSize">
+                  <option value="a4">A4 (210x297 mm)</option>
+                  <option value="a3">A3 (297x420 mm)</option>
+                  <option value="letter">Letter (215.9x279.4 mm)</option>
+                  <option value="legal">Legal (215.9x355.6 mm)</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Layout (images per page)</label>
+                <select class="form-select" id="layoutType">
+                  <option value="1" selected>1 per page</option>
+                  <option value="2">2 per page (2x1)</option>
+                  <option value="4">4 per page (2x2)</option>
+                  <option value="6">6 per page (3x2)</option>
+                  <option value="9">9 per page (3x3)</option>
+                  <option value="12">12 per page (4x3)</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Position (single image only)</label>
+                <select class="form-select" id="position">
+                  <option value="center" selected>Center</option>
+                  <option value="top-left">Top-Left</option>
+                  <option value="top-right">Top-Right</option>
+                  <option value="bottom-left">Bottom-Left</option>
+                  <option value="bottom-right">Bottom-Right</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Rotation</label>
+                <select class="form-select" id="rotation">
+                  <option value="0">0°</option>
+                  <option value="90">90°</option>
+                  <option value="180">180°</option>
+                  <option value="270">270°</option>
+                </select>
+              </div>
+            </div>
+            <small class="text-secondary">Note: Position applies only when 1 image per page is selected. Grid layouts are centered.</small>
+          </div>
+        </div>
+
+        <!-- Quality Options -->
+        <div class="row g-3 mb-4" id="qualityOptions"></div>
+      </div>
+
+      <!-- Features highlights -->
+      <div class="row g-4 my-5 text-center">
+        <div class="col-md-3 col-6">
+          <i class="bi bi-shield-check fs-2 text-primary-custom"></i>
+          <h6 class="mt-2">Secure & Private</h6>
+          <small>Files auto-deleted</small>
+        </div>
+        <div class="col-md-3 col-6">
+          <i class="bi bi-speedometer2 fs-2 text-primary-custom"></i>
+          <h6 class="mt-2">Fast Conversion</h6>
+          <small>In seconds</small>
+        </div>
+        <div class="col-md-3 col-6">
+          <i class="bi bi-layers fs-2 text-primary-custom"></i>
+          <h6 class="mt-2">Merge Multiple</h6>
+          <small>Combine images</small>
+        </div>
+        <div class="col-md-3 col-6">
+          <i class="bi bi-device-desktop fs-2 text-primary-custom"></i>
+          <h6 class="mt-2">Works Everywhere</h6>
+          <small>Mobile, desktop</small>
+        </div>
+      </div>
+
+      <!-- SEO Content -->
+      <section class="seo-content mt-5">
+        <h2>What is PNG to PDF Conversion?</h2>
+        <p>PNG to PDF conversion is the process of transforming PNG images into a single PDF document or individual PDF files. This is useful when you need to combine multiple images into one easily shareable document, preserve image quality in a standardized format, or create printable portfolios. Our free online tool uses jsPDF and HTML5 canvas to convert your images directly in your browser—no server upload, ensuring speed and privacy.</p>
+        <h3>Why Convert PNG to PDF?</h3>
+        <p>PDF is the industry standard for document sharing, preserving layout and quality across all devices. Converting PNG images to PDF allows you to combine multiple images into a single file, reduce file size for email attachments, create professional portfolios, or prepare images for printing. Students convert presentation slides, designers compile portfolios, and professionals create unified reports.</p>
+        <h3>Benefits of Using This Free Tool</h3>
+        <ul>
+          <li><strong>100% free</strong> with no signup or watermark.</li>
+          <li><strong>Multiple quality options</strong> (Low, Medium, High) to balance file size and clarity.</li>
+          <li><strong>Fast</strong> client-side conversion using optimized libraries.</li>
+          <li><strong>Privacy-first</strong>: files never leave your device.</li>
+          <li><strong>Dark mode</strong> and responsive design for comfortable use.</li>
+        </ul>
+        <h3>How the Conversion Process Works</h3>
+        <p>You upload one or more PNG images (max 100MB each). The tool reads each image, converts it to a format suitable for PDF embedding, then uses jsPDF to create a PDF document. You can choose between Low, Medium, or High quality settings that affect the PDF compression level. Each image becomes a separate page in the final PDF. The conversion time is displayed for transparency.</p>
+        <h3>Privacy and Security Assurances</h3>
+        <p>Your images are processed entirely in your browser using JavaScript. No file is uploaded to any server. The data never leaves your device, guaranteeing complete privacy. We do not store, share, or access your files. This tool is designed with security as a priority.</p>
+        <h3>Use Cases</h3>
+        <p><strong>Professionals:</strong> Combine screenshots into a single report. <strong>Students:</strong> Create study materials from multiple diagrams. <strong>Designers:</strong> Compile portfolios for client presentations. <strong>Marketers:</strong> Create branded PDFs from social media graphics. <strong>Everyone:</strong> Convert photo collections into shareable albums.</p>
+        <h3>Troubleshooting Tips</h3>
+        <p>If conversion fails, ensure your images are not corrupted. Try a different quality setting. For large images, wait a few seconds—rendering depends on image dimensions. Use the "Clear" button to reset. If you see a blank preview, check browser console for errors; modern Chromium, Firefox, and Safari are supported.</p>
+        <h3>File Format Differences: PNG vs PDF</h3>
+        <p>PNG (Portable Network Graphics) is a raster image format with lossless compression, ideal for web graphics with transparency. PDF (Portable Document Format) is a document format that can contain both vector and raster elements, preserving text, images, and layout across platforms. Converting PNG to PDF creates a document that's easy to print, email, and view on any device while maintaining image quality.</p>
+        <p>This converter gives you control over the output quality, so you can keep high detail for printing or smaller files for email. Over 50,000 conversions have been performed successfully, making it a trusted choice for quick PNG-to-PDF needs.</p>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="mt-5">
+        <h3 class="mb-3">Frequently Asked Questions</h3>
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">Is this tool really free?</button></h2>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes, completely free with no hidden charges or sign-up.</div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">What is the maximum file size?</button></h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">100MB per image. Multiple images can be uploaded.</div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">How many images can I convert?</button></h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Any number, but performance depends on your device and image complexity.</div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">Are my files secure?</button></h2>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Absolutely. All processing is done in your browser; files never leave your device.</div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">What quality options are available?</button></h2>
+            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Low, Medium, and High quality presets balancing file size and image clarity.</div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">Can I merge all images into one PDF?</button></h2>
+            <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes, you can select multiple images and combine them into a single PDF.</div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">Does this tool work on mobile?</button></h2>
+            <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes, it's fully responsive and works on smartphones and tablets.</div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq8">What if I get an error?</button></h2>
+            <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Check your images are not corrupted and try again. If issues persist, use a different browser.</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="mt-5 pt-3 border-top">
+        <div class="d-flex justify-content-between flex-wrap">
+          <span class="text-secondary small">&copy; 2026 PNGPDF.online</span>
+          <div class="footer-links">
+            <a href="#" data-bs-toggle="modal" data-bs-target="#privacyTermsModal">Privacy &amp; Terms</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Privacy & Terms Modal -->
+    <div class="modal fade" id="privacyTermsModal" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Privacy Policy &amp; Terms</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <h4>Privacy Policy</h4>
+            <p>We do not collect, store, or transmit any files you upload. All processing is local. No cookies are used for tracking. Third-party ads may use cookies; see their policies.</p>
+            <h4>Terms &amp; Conditions</h4>
+            <p>This tool is provided "as is" without warranty. You are responsible for the content you convert. We reserve the right to update terms. Use at your own risk.</p>
+            <p><small>Last updated: 2026</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script>
+      (function () {
+        // DOM refs
+        const dropZone = document.getElementById("dropZone");
+        const fileInput = document.getElementById("fileInput");
+        const fileInfo = document.getElementById("fileInfo");
+        const fileCount = document.getElementById("fileCount");
+        const progressBar = document.getElementById("loadingProgress");
+        const resultArea = document.getElementById("resultArea");
+        const previewRow = document.getElementById("previewRow");
+        const qualityOptions = document.getElementById("qualityOptions");
+        const clearBtn = document.getElementById("clearBtn");
+        const conversionTime = document.getElementById("conversionTime");
+        const darkToggle = document.getElementById("darkModeToggle");
+
+        // Layout controls
+        const pageSizeSelect = document.getElementById("pageSize");
+        const layoutSelect = document.getElementById("layoutType");
+        const positionSelect = document.getElementById("position");
+        const rotationSelect = document.getElementById("rotation");
+
+        let imageData = []; // each: { dataUrl, width, height, name, fileSize }
+        let conversionStart = 0;
+
+        const qualityPresets = [
+          { label: "Low", quality: 0.6, format: "JPEG" },
+          { label: "Medium", quality: 0.9, format: "JPEG" },
+          { label: "High", quality: 1.0, format: "PNG" },
+        ];
+
+        const pageSizes = {
+          a4: { width: 210, height: 297 },
+          a3: { width: 297, height: 420 },
+          letter: { width: 215.9, height: 279.4 },
+          legal: { width: 215.9, height: 355.6 },
+        };
+
+        const layoutMap = {
+          1: [1, 1],
+          2: [2, 1],
+          4: [2, 2],
+          6: [3, 2],
+          9: [3, 3],
+          12: [4, 3],
+        };
+
+        const DPI = 300;
+        const MM_TO_PIXELS = DPI / 25.4;
+
+        // Dark mode
+        darkToggle.addEventListener("click", () => {
+          document.body.classList.toggle("dark-mode");
+          darkToggle.innerHTML = document.body.classList.contains("dark-mode") ? '<i class="bi bi-sun"></i> Light' : '<i class="bi bi-moon"></i> Dark';
+        });
+
+        // Drag & drop for upload
+        dropZone.addEventListener("click", () => fileInput.click());
+        dropZone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          dropZone.classList.add("dragover");
+        });
+        dropZone.addEventListener("dragleave", () => dropZone.classList.remove("dragover"));
+        dropZone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          dropZone.classList.remove("dragover");
+          if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
+        });
+        fileInput.addEventListener("change", (e) => {
+          if (e.target.files.length) handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+          const validFiles = Array.from(files).filter((f) => f.type.startsWith("image/"));
+          if (!validFiles.length) {
+            alert("Please select valid image files.");
+            return;
+          }
+          for (let f of validFiles) {
+            if (f.size > 100 * 1024 * 1024) {
+              alert(`File "${f.name}" exceeds 100MB limit.`);
+              return;
+            }
+          }
+          resetUI();
+          fileCount.textContent = validFiles.length;
+          fileInfo.classList.remove("d-none");
+          progressBar.style.width = "10%";
+          conversionStart = Date.now();
+
+          let loaded = 0;
+          imageData = [];
+          const total = validFiles.length;
+
+          validFiles.forEach((file) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const img = new Image();
+              img.onload = () => {
+                imageData.push({
+                  dataUrl: e.target.result,
+                  width: img.width,
+                  height: img.height,
+                  name: file.name,
+                  fileSize: file.size, // store original file size in bytes
+                });
+                loaded++;
+                progressBar.style.width = 10 + (loaded / total) * 50 + "%";
+                if (loaded === total) {
+                  generatePreviews();
+                  generateQualityOptions();
+                  resultArea.classList.remove("d-none");
+                  const elapsed = ((Date.now() - conversionStart) / 1000).toFixed(1);
+                  conversionTime.textContent = `Conversion ready in ${elapsed}s`;
+                  progressBar.style.width = "100%";
+                }
+              };
+              img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+          });
+        }
+
+        // --- Drag and Drop Reorder ---
+        let draggedIndex = null;
+
+        function generatePreviews() {
+          previewRow.innerHTML = "";
+          imageData.forEach((img, idx) => {
+            const col = document.createElement("div");
+            col.className = "col-auto text-center drag-item";
+            col.draggable = true;
+            col.dataset.index = idx;
+            col.innerHTML = `
+            <img src="${img.dataUrl}" class="preview-thumb" alt="image ${idx + 1}" style="max-height:120px; width:auto;">
+            <div class="form-check mt-1">
+              <input class="form-check-input page-checkbox" type="checkbox" id="img${idx}" value="${idx}" checked>
+              <label class="form-check-label small" for="img${idx}">Image ${idx + 1}</label>
+            </div>
+          `;
+            previewRow.appendChild(col);
+          });
+
+          document.querySelectorAll(".drag-item").forEach((item) => {
+            item.addEventListener("dragstart", handleDragStart);
+            item.addEventListener("dragend", handleDragEnd);
+            item.addEventListener("dragover", handleDragOver);
+            item.addEventListener("dragenter", handleDragEnter);
+            item.addEventListener("dragleave", handleDragLeave);
+            item.addEventListener("drop", handleDrop);
+          });
+        }
+
+        function handleDragStart(e) {
+          draggedIndex = parseInt(this.dataset.index);
+          this.classList.add("dragging");
+          e.dataTransfer.effectAllowed = "move";
+          e.dataTransfer.setData("text/plain", draggedIndex);
+          e.dataTransfer.setData("text/html", this.innerHTML);
+        }
+
+        function handleDragEnd(e) {
+          this.classList.remove("dragging");
+          document.querySelectorAll(".drag-item").forEach((el) => el.classList.remove("drag-over"));
+        }
+
+        function handleDragOver(e) {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
+        }
+
+        function handleDragEnter(e) {
+          e.preventDefault();
+          if (this.dataset.index != draggedIndex) {
+            this.classList.add("drag-over");
+          }
+        }
+
+        function handleDragLeave(e) {
+          this.classList.remove("drag-over");
+        }
+
+        function handleDrop(e) {
+          e.preventDefault();
+          this.classList.remove("drag-over");
+          const targetIndex = parseInt(this.dataset.index);
+          if (draggedIndex === null || draggedIndex === targetIndex) return;
+          [imageData[draggedIndex], imageData[targetIndex]] = [imageData[targetIndex], imageData[draggedIndex]];
+          generatePreviews();
+          generateQualityOptions();
+          draggedIndex = null;
+        }
+
+        function getSelectedImages() {
+          const checkboxes = document.querySelectorAll(".page-checkbox:checked");
+          return Array.from(checkboxes).map((cb) => parseInt(cb.value));
+        }
+
+        // --- Estimate output size for a single image based on quality preset ---
+        function estimateImageSize(img, preset) {
+          const pixels = img.width * img.height;
+          let estimatedBytes = 0;
+          if (preset.format === "PNG") {
+            // PNG lossless: roughly 4 bytes per pixel (RGBA) but compressed; use factor 3.5 for estimate
+            estimatedBytes = pixels * 3.5;
+          } else {
+            // JPEG: size depends on quality. Approx: (pixels * quality * 0.1) bytes
+            estimatedBytes = pixels * preset.quality * 0.08;
+          }
+          // clamp to at least 10KB
+          return Math.max(estimatedBytes, 10240);
+        }
+
+        function generateQualityOptions() {
+          qualityOptions.innerHTML = "";
+          const selectedIndices = getSelectedImages();
+          if (selectedIndices.length === 0 && imageData.length > 0) {
+            // if none selected, show estimate for all? Actually we show for selected, but if none selected we can show 0.
+            // But we'll compute for selected, if 0 then totalEst=0.
+          }
+          const selectedImages = selectedIndices.map((idx) => imageData[idx]);
+
+          qualityPresets.forEach((preset) => {
+            // Calculate total estimated size for selected images
+            let totalBytes = 0;
+            if (selectedImages.length > 0) {
+              selectedImages.forEach((img) => {
+                totalBytes += estimateImageSize(img, preset);
+              });
+            } else {
+              // if no images selected, show 0
+              totalBytes = 0;
+            }
+            const totalKB = (totalBytes / 1024).toFixed(0);
+            const totalMB = (totalKB / 1024).toFixed(1);
+
+            const col = document.createElement("div");
+            col.className = "col-md-4 col-sm-6 mb-3";
+            let sizeDisplay = totalKB + " KB";
+            if (totalKB > 1024) {
+              sizeDisplay = totalMB + " MB";
+            }
+            col.innerHTML = `
+            <div class="quality-card d-flex flex-column justify-content-between">
+              <div><h5>${preset.label} Quality</h5><small class="text-secondary">${preset.format} ${preset.format === "JPEG" ? `(${Math.round(preset.quality * 100)}%)` : "(Lossless)"}</small></div>
+              <div class="mt-2"><span class="badge bg-light text-dark">~${sizeDisplay}</span></div>
+              <button class="btn btn-primary-custom mt-2 download-quality" data-quality="${preset.quality}" data-format="${preset.format}" data-label="${preset.label}">Download ${preset.label} - ${sizeDisplay}</button>
+            </div>
+          `;
+            qualityOptions.appendChild(col);
+          });
+
+          document.querySelectorAll(".download-quality").forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const quality = parseFloat(this.dataset.quality);
+              const format = this.dataset.format;
+              const label = this.dataset.label;
+              downloadPDF(quality, format, label);
+            });
+          });
+        }
+
+        function loadAndTransformImage(dataUrl, quality, format, rotation, targetWidthMM, targetHeightMM) {
+          return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+              const pixelWidth = Math.round(targetWidthMM * MM_TO_PIXELS);
+              const pixelHeight = Math.round(targetHeightMM * MM_TO_PIXELS);
+              const canvas = document.createElement("canvas");
+              const rad = (rotation * Math.PI) / 180;
+              const isRotated = rotation % 180 !== 0;
+              const outWidth = isRotated ? pixelHeight : pixelWidth;
+              const outHeight = isRotated ? pixelWidth : pixelHeight;
+              canvas.width = outWidth;
+              canvas.height = outHeight;
+              const ctx = canvas.getContext("2d");
+              ctx.clearRect(0, 0, outWidth, outHeight);
+              ctx.translate(outWidth / 2, outHeight / 2);
+              ctx.rotate(rad);
+              ctx.drawImage(img, -pixelWidth / 2, -pixelHeight / 2, pixelWidth, pixelHeight);
+              let mimeType = format === "PNG" ? "image/png" : "image/jpeg";
+              let extraParams = {};
+              if (format === "JPEG") {
+                extraParams.quality = quality;
+              }
+              const dataUrlOut = canvas.toDataURL(mimeType, extraParams.quality);
+              resolve(dataUrlOut);
+            };
+            img.onerror = reject;
+            img.src = dataUrl;
+          });
+        }
+
+        async function downloadPDF(quality, format, label) {
+          const selectedIndices = getSelectedImages();
+          if (!selectedIndices.length) {
+            alert("Please select at least one image to convert.");
+            return;
+          }
+
+          const pageSizeKey = pageSizeSelect.value;
+          const pageDim = pageSizes[pageSizeKey];
+          const layoutVal = layoutSelect.value;
+          const [rows, cols] = layoutMap[layoutVal] || [1, 1];
+          const position = positionSelect.value;
+          const rotation = parseInt(rotationSelect.value);
+
+          const { jsPDF } = window.jspdf;
+          const pdf = new jsPDF({
+            orientation: pageDim.width > pageDim.height ? "landscape" : "portrait",
+            unit: "mm",
+            format: [pageDim.width, pageDim.height],
+          });
+
+          const pageWidth = pageDim.width;
+          const pageHeight = pageDim.height;
+          const margin = 10;
+          const cellWidth = (pageWidth - 2 * margin) / cols;
+          const cellHeight = (pageHeight - 2 * margin) / rows;
+
+          const totalImages = selectedIndices.length;
+          let imgIndex = 0;
+
+          while (imgIndex < totalImages) {
+            if (imgIndex > 0) {
+              pdf.addPage();
+            }
+
+            for (let r = 0; r < rows; r++) {
+              for (let c = 0; c < cols; c++) {
+                if (imgIndex >= totalImages) break;
+                const idx = selectedIndices[imgIndex];
+                const imgData = imageData[idx];
+                const imgAspect = imgData.width / imgData.height;
+                let imgWidthMM = cellWidth - 2;
+                let imgHeightMM = cellWidth / imgAspect;
+                if (imgHeightMM > cellHeight - 2) {
+                  imgHeightMM = cellHeight - 2;
+                  imgWidthMM = imgHeightMM * imgAspect;
+                }
+
+                let posX = margin + c * cellWidth + (cellWidth - imgWidthMM) / 2;
+                let posY = margin + r * cellHeight + (cellHeight - imgHeightMM) / 2;
+
+                if (rows === 1 && cols === 1) {
+                  switch (position) {
+                    case "top-left":
+                      posX = margin;
+                      posY = margin;
+                      break;
+                    case "top-right":
+                      posX = pageWidth - margin - imgWidthMM;
+                      posY = margin;
+                      break;
+                    case "bottom-left":
+                      posX = margin;
+                      posY = pageHeight - margin - imgHeightMM;
+                      break;
+                    case "bottom-right":
+                      posX = pageWidth - margin - imgWidthMM;
+                      posY = pageHeight - margin - imgHeightMM;
+                      break;
+                    default: // center
+                      posX = (pageWidth - imgWidthMM) / 2;
+                      posY = (pageHeight - imgHeightMM) / 2;
+                  }
+                }
+
+                try {
+                  const compressedDataUrl = await loadAndTransformImage(imgData.dataUrl, quality, format, rotation, imgWidthMM, imgHeightMM);
+                  pdf.addImage(compressedDataUrl, format === "PNG" ? "PNG" : "JPEG", posX, posY, imgWidthMM, imgHeightMM);
+                } catch (err) {
+                  console.error("Error processing image:", err);
+                  alert("Failed to process image. Please try again.");
+                  return;
+                }
+                imgIndex++;
+              }
+              if (imgIndex >= totalImages) break;
+            }
+          }
+          pdf.save(`converted_${label}.pdf`);
+        }
+
+        // Select All / Deselect All
+        document.getElementById("selectAllPages").addEventListener("click", function () {
+          document.querySelectorAll(".page-checkbox").forEach((cb) => (cb.checked = true));
+          generateQualityOptions();
+        });
+
+        document.getElementById("deselectAllPages").addEventListener("click", function () {
+          document.querySelectorAll(".page-checkbox").forEach((cb) => (cb.checked = false));
+          generateQualityOptions();
+        });
+
+        // Also update estimates when checkboxes change
+        document.addEventListener("change", function (e) {
+          if (e.target.classList.contains("page-checkbox")) {
+            generateQualityOptions();
+          }
+        });
+
+        // Clear
+        function resetUI() {
+          fileInfo.classList.add("d-none");
+          resultArea.classList.add("d-none");
+          previewRow.innerHTML = "";
+          qualityOptions.innerHTML = "";
+          progressBar.style.width = "0%";
+          conversionTime.textContent = "";
+          imageData = [];
+          document.querySelectorAll(".page-checkbox").forEach((cb) => (cb.checked = true));
+          fileInput.value = "";
+          draggedIndex = null;
+        }
+
+        clearBtn.addEventListener("click", resetUI);
+        window.resetUI = resetUI;
+      })();
+    </script>
+  </body>
+</html>
