@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pngpdf.online/sitemap.xml
